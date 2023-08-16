@@ -1,0 +1,20 @@
+<nav>
+    <ul>
+        <li>
+            <a href="{% url 'home' %}">Learning Logs</a>
+        </li>
+        {% if user.is_authenticated %}
+            <li>{{ user.get_full_name }}</li>
+            <li>
+                <a href="{% url 'logout' %}">Sair</a>
+            </li>
+        {% else %}
+            <li>
+                <a href="{% url 'login' %}">Entrar</a>
+            </li>
+            <li>
+                <a href="{% url 'signup' %}">Criar Conta</a>
+            </li>
+        {% endif %}
+    </ul>
+</nav>
