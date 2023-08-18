@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Tópicos{% endblock %}
+
+{% block content %}
+    <div>
+        <h1>Tópicos</h1>
+
+        <form method="get">
+            {{ search_form.as_p }}
+        </form>
+
+        <ul>
+            {% for topic in topics %}
+                <li>
+                    <a href="{{ topic.get_url }}">{{ topic.get_title }}</a>
+                </li>
+            {% empty %}
+                {% if search %}
+                    <li>Não foram encontrados resultados para: <b>{{ search }}</b></li>
+                {% else %}
+                    <li>Ainda não há tópicos cadastrados</li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+
+        {% include 'pagination.html' with page_obj=page_obj %}
+    </div>
+{% endblock %}

@@ -4,10 +4,13 @@
             <a href="{% url 'home' %}">Learning Logs</a>
         </li>
         {% if user.is_authenticated %}
-            <li>{{ user.get_full_name }}</li>
+            <li>
+                <a href="{% url 'topics' %}">Meus Tópicos</a>
+            </li>
             <li>
                 <a href="{% url 'logout' %}">Sair</a>
             </li>
+            <li>{{ user.get_full_name }}</li>
         {% else %}
             <li>
                 <a href="{% url 'login' %}">Entrar</a>

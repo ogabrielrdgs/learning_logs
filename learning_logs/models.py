@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.utils.translation import gettext_lazy as _
+from django.urls import reverse_lazy
 
 
 class Topic(models.Model):
@@ -28,6 +29,15 @@ class Topic(models.Model):
                 violation_error_message=_("You already have a topic with this title!"),
             ),
         )
+
+    def get_title(self):
+        if len(self.title) > 20:
+            return self.title[:20] + "..."
+        else:
+            return self.title
+
+    def get_url(self):
+        return reverse_lazy("topic", kwargs={"pk": self.pk})
 
 
 class Entry(models.Model):
