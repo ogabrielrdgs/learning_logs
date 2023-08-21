@@ -7,10 +7,10 @@
             <li>
                 <a href="{% url 'topics' %}">Meus Tópicos</a>
             </li>
+            <li>Olá, {{ user.get_full_name }}</li>
             <li>
                 <a href="{% url 'logout' %}">Sair</a>
             </li>
-            <li>{{ user.get_full_name }}</li>
         {% else %}
             <li>
                 <a href="{% url 'login' %}">Entrar</a>

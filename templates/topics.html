@@ -10,6 +10,8 @@
             {{ search_form.as_p }}
         </form>
 
+        <a href="{% url 'new_topic' %}">Novo Tópico</a>
+
         <ul>
             {% for topic in topics %}
                 <li>
