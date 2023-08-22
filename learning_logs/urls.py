@@ -16,4 +16,19 @@ urlpatterns = [
         views.TopicDeleteView.as_view(),
         name="delete_topic",
     ),
+    path(
+        "meus_topicos/<int:pk>/novo_registro/",
+        views.EntryCreateView.as_view(),
+        name="new_entry",
+    ),
+    path(
+        "meus_topicos/atualizar_registro/<int:pk>/",
+        views.EntryUpdateView.as_view(),
+        name="update_entry",
+    ),
+    path(
+        "meus_topicos/excluir_registro/<int:pk>/",
+        views.EntryDeleteView.as_view(),
+        name="delete_entry",
+    ),
 ]

@@ -37,3 +37,13 @@ class TopicForm(forms.ModelForm):
         fields = ("title", "public")
         labels = {"title": "Título", "public": "Tornar tópico público?"}
         widgets = {"title": forms.TextInput(attrs={"autofocus": True})}
+
+
+class EntryForm(forms.ModelForm):
+    class Meta:
+        model = models.Entry
+        fields = ("content",)
+        labels = {"content": "O que você aprendeu?"}
+        widgets = {
+            "content": forms.Textarea(attrs={"rows": 10, "cols": 50, "autofocus": True})
+        }

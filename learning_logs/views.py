@@ -1,5 +1,8 @@
 from typing import Any, Dict
-from django.http import Http404
+from django.db import models
+from django.forms.forms import BaseForm
+from django.http import Http404, HttpRequest, HttpResponse
+from django.http.response import HttpResponse
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404
@@ -120,3 +123,59 @@ class TopicDeleteView(SuccessMessageMixin, LoginRequiredMixin, DeleteView):
 
     def get_queryset(self):
         return models.Topic.objects.filter(owner=self.request.user)
+
+
+class EntryCreateView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
+    template_name = "form.html"
+    form_class = forms.EntryForm
+    success_message = "Registro criado com sucesso!"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = "Criar novo registro"
+        context["btn_value"] = "Criar"
+        return context
+
+    def form_valid(self, form):
+        topic = get_object_or_404(
+            models.Topic, pk=self.kwargs["pk"], owner=self.request.user
+        )
+        new_entry = form.save(commit=False)
+        new_entry.topic = topic
+        new_entry.save()
+        self.success_url = topic.get_url()
+        return super().form_valid(form)
+
+
+class EntryUpdateView(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
+    template_name = "form.html"
+    form_class = forms.EntryForm
+    success_message = "Registro atualizado com sucesso!"
+
+    def get_queryset(self):
+        return models.Entry.objects.filter(topic__owner=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = f"Atualizar registro"
+        context["btn_value"] = "Salvar"
+        return context
+
+    def form_valid(self, form):
+        entry = form.save()
+        self.success_url = entry.topic.get_url()
+        return super().form_valid(form)
+
+
+class EntryDeleteView(SuccessMessageMixin, LoginRequiredMixin, DeleteView):
+    success_message = "Registro excluído com sucesso!"
+
+    def get(self, request, *args, **kwargs):
+        raise Http404
+
+    def get_queryset(self):
+        return models.Entry.objects.filter(topic__owner=self.request.user)
+
+    def form_valid(self, form):
+        self.success_url = self.get_object().topic.get_url()
+        return super().form_valid(form)
