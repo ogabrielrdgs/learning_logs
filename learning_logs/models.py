@@ -39,6 +39,9 @@ class Topic(models.Model):
     def get_url(self):
         return reverse_lazy("topic", kwargs={"pk": self.pk})
 
+    def get_public_url(self):
+        return reverse_lazy("public_topic", kwargs={"pk": self.pk})
+
 
 class Entry(models.Model):
     content = models.TextField(_("content"))

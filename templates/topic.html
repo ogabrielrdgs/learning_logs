@@ -6,12 +6,16 @@
     <div>
         <h1>{{ topic.get_title }}</h1>
 
-        <a href="{% url 'update_topic' topic.pk %}">Atualizar Tópico</a>
-        <form action="{% url 'delete_topic' topic.pk %}" method="post">
-            {% csrf_token %}
-            <button type="submit">Excluir Tópico</button>
-        </form>
-        <a href="{% url 'new_entry' topic.pk %}">Novo Registro</a>
+        {% if not public %}
+            <a href="{% url 'update_topic' topic.pk %}">Atualizar Tópico</a>
+            <form action="{% url 'delete_topic' topic.pk %}" method="post">
+                {% csrf_token %}
+                <button type="submit">Excluir Tópico</button>
+            </form>
+            <a href="{% url 'new_entry' topic.pk %}">Novo Registro</a>
+        {% else %}
+            <p><span>Criado por: </span>{{ topic.owner.get_full_name }}</p>
+        {% endif %}
 
         <form method="get">
             {{ search_form.as_p }}
@@ -22,13 +26,15 @@
                 <li>
                     <p>{{ entry.content }}</p>
                     <span>{{ topic.date_added }}</span>
-                    <p>
-                        <a href="{% url 'update_entry' entry.pk %}">Atualizar Registro</a>
-                        <form action="{% url 'delete_entry' entry.pk %}" method="post">
-                            {% csrf_token %}
-                            <button type="submit">Excluir Registro</button>
-                        </form>
-                    </p>
+                    {% if not public %}
+                        <div>
+                            <a href="{% url 'update_entry' entry.pk %}">Atualizar Registro</a>
+                            <form action="{% url 'delete_entry' entry.pk %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit">Excluir Registro</button>
+                            </form>
+                        </div>
+                    {% endif %}
                 </li>
             {% empty %}
                 {% if search %}

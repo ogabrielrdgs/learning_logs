@@ -5,6 +5,14 @@ from . import views
 urlpatterns = [
     path("meus_topicos/", views.TopicListView.as_view(), name="topics"),
     path("meus_topicos/<int:pk>/", views.TopicDetailView.as_view(), name="topic"),
+    path(
+        "topicos_publicos/", views.PublicTopicListView.as_view(), name="public_topics"
+    ),
+    path(
+        "topicos_publicos/<int:pk>/",
+        views.PublicTopicDetailView.as_view(),
+        name="public_topic",
+    ),
     path("meus_topicos/novo/", views.TopicCreateView.as_view(), name="new_topic"),
     path(
         "meus_topicos/<int:pk>/atualizar/",

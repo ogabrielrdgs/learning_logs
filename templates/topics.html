@@ -10,12 +10,14 @@
             {{ search_form.as_p }}
         </form>
 
-        <a href="{% url 'new_topic' %}">Novo Tópico</a>
+        {% if not public %}
+            <a href="{% url 'new_topic' %}">Novo Tópico</a>
+        {% endif %}
 
         <ul>
             {% for topic in topics %}
                 <li>
-                    <a href="{{ topic.get_url }}">{{ topic.get_title }}</a>
+                    <a href="{% if not public %}{{ topic.get_url }}{% else %}{{ topic.get_public_url }}{% endif %}">{{ topic.get_title }}</a>
                 </li>
             {% empty %}
                 {% if search %}

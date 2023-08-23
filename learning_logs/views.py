@@ -1,8 +1,5 @@
-from typing import Any, Dict
 from django.db import models
-from django.forms.forms import BaseForm
-from django.http import Http404, HttpRequest, HttpResponse
-from django.http.response import HttpResponse
+from django.http import Http404
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404
@@ -58,6 +55,60 @@ class TopicDetailView(LoginRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         context["topic"] = get_object_or_404(
             models.Topic, pk=self.kwargs["pk"], owner=self.request.user
+        )
+        context["search"] = self.request.GET.get("q", "")
+        context["search_form"] = forms.SearchForm(
+            initial={"q": context["search"]}, placeholder="Buscar registro..."
+        )
+        return context
+
+
+class PublicTopicListView(ListView):
+    model = models.Topic
+    template_name = "topics.html"
+    context_object_name = "topics"
+    paginate_by = 10
+
+    def get_queryset(self):
+        search = self.request.GET.get("q", "")
+        if search:
+            return models.Topic.objects.filter(public=True, title__istartswith=search)
+        else:
+            return models.Topic.objects.filter(public=True)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["public"] = True
+        context["search"] = self.request.GET.get("q", "")
+        context["search_form"] = forms.SearchForm(
+            initial={"q": context["search"]}, placeholder="Buscar tópico..."
+        )
+        return context
+
+
+class PublicTopicDetailView(ListView):
+    model = models.Entry
+    template_name = "topic.html"
+    context_object_name = "entries"
+    paginate_by = 10
+
+    def get_queryset(self):
+        search = self.request.GET.get("q", "")
+        if search:
+            return models.Entry.objects.filter(
+                topic__pk=self.kwargs["pk"],
+                topic__public=True,
+                content__icontains=search,
+            )
+        return models.Entry.objects.filter(
+            topic__pk=self.kwargs["pk"], topic__public=True
+        )
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["public"] = True
+        context["topic"] = get_object_or_404(
+            models.Topic, pk=self.kwargs["pk"], public=True
         )
         context["search"] = self.request.GET.get("q", "")
         context["search_form"] = forms.SearchForm(

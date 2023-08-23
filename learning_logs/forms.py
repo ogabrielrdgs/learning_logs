@@ -13,6 +13,7 @@ class SearchForm(forms.Form):
         label="",
         max_length=100,
         widget=forms.TextInput(),
+        required=False,
     )
 
 

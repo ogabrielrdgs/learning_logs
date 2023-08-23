@@ -3,6 +3,9 @@
         <li>
             <a href="{% url 'home' %}">Learning Logs</a>
         </li>
+        <li>
+            <a href="{% url 'public_topics' %}">Tópicos Públicos</a>
+        </li>
         {% if user.is_authenticated %}
             <li>
                 <a href="{% url 'topics' %}">Meus Tópicos</a>
