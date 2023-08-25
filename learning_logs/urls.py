@@ -13,6 +13,11 @@ urlpatterns = [
         views.PublicTopicDetailView.as_view(),
         name="public_topic",
     ),
+    path(
+        "topicos_publicos/<int:pk>/copiar/",
+        views.copy_topic,
+        name="copy_topic",
+    ),
     path("meus_topicos/novo/", views.TopicCreateView.as_view(), name="new_topic"),
     path(
         "meus_topicos/<int:pk>/atualizar/",

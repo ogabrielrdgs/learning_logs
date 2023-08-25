@@ -1,10 +1,12 @@
-from django.db import models
+from django.db import models, transaction
 from django.http import Http404
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 from . import models, forms
 
@@ -115,6 +117,37 @@ class PublicTopicDetailView(ListView):
             initial={"q": context["search"]}, placeholder="Buscar registro..."
         )
         return context
+
+
+@login_required()
+def copy_topic(request, pk):
+    if request.method != "POST":
+        raise Http404
+
+    topic = get_object_or_404(models.Topic, pk=pk, public=True)
+
+    if models.Topic.objects.filter(title=topic.title, owner=request.user).exists():
+        messages.error(request, "Você já possui um tópico com esse título!")
+    else:
+        try:
+            with transaction.atomic():
+                topic.pk = None
+                topic.owner = request.user
+                topic.public = False
+                topic.save()
+
+                for entry in models.Entry.objects.filter(topic__pk=pk).order_by(
+                    "date_added"
+                ):
+                    entry.pk = None
+                    entry.topic = topic
+                    entry.save()
+
+                messages.success(request, "Tópico copiado com sucesso!")
+        except Exception:
+            messages.error(request, "Ocorreu um erro ao copiar o tópico!")
+
+    return redirect("public_topic", pk=pk)
 
 
 class TopicCreateView(SuccessMessageMixin, LoginRequiredMixin, CreateView):

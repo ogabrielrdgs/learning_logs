@@ -15,6 +15,12 @@
             <a href="{% url 'new_entry' topic.pk %}">Novo Registro</a>
         {% else %}
             <p><span>Criado por: </span>{{ topic.owner.get_full_name }}</p>
+            {% if user.is_authenticated %}
+                <form action="{% url 'copy_topic' pk=topic.pk %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit">Copiar Tópico</button>
+                </form>
+            {% endif %}
         {% endif %}
 
         <form method="get">
