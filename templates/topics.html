@@ -4,29 +4,35 @@
 
 {% block content %}
     <div>
-        <h1>Tópicos</h1>
-
-        <form method="get">
-            {{ search_form.as_p }}
-        </form>
+        {% include 'search.html' with search_form=search_form %}
 
         {% if not public %}
-            <a href="{% url 'new_topic' %}">Novo Tópico</a>
+            <div class="d-flex justify-content-end">
+                <a class="btn btn-primary" href="{% url 'new_topic' %}">Novo Tópico</a>
+            </div>
         {% endif %}
-
-        <ul>
-            {% for topic in topics %}
-                <li>
-                    <a href="{% if not public %}{{ topic.get_url }}{% else %}{{ topic.get_public_url }}{% endif %}">{{ topic.get_title }}</a>
-                </li>
-            {% empty %}
-                {% if search %}
-                    <li>Não foram encontrados resultados para: <b>{{ search }}</b></li>
-                {% else %}
-                    <li>Ainda não há tópicos cadastrados</li>
-                {% endif %}
-            {% endfor %}
-        </ul>
+        
+        <div class="mt-3 mb-5">
+            {% if topics %}
+            <ul class="list-group">
+                {% for topic in topics %}
+                    <a class="list-group-item d-flex justify-content-between align-items-center m-0 p-3" href="{% if not public %}{{ topic.get_url }}{% else %}{{ topic.get_public_url }}{% endif %}">
+                        <span>{{ topic.get_title }}</span>
+                        <span class="badge bg-primary rounded-pill">{{ topic.entries.count }}</span>
+                    </a>
+                {% endfor %}
+            </ul>
+            {% else %}
+                <p class="alert alert-danger">
+                    {% if search %}
+                        Não foram encontrados resultados para: <span class="fw-bold fst-italic">{{ search }}</span>
+                    {% else %}
+                        Ainda não há tópicos cadastrados
+                    {% endif %}
+                </p>
+            {% endif %}
+        </div>
+        
 
         {% include 'pagination.html' with page_obj=page_obj %}
     </div>

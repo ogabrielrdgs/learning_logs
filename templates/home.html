@@ -3,7 +3,15 @@
 {% block title %}Learning Logs{% endblock %}
 
 {% block content %}
-    <div>
-        <h1>Learning Logs</h1>
+    <div class="bg-light rounded shadow p-5">
+        <h1 class="display-3">Acompanhe seu aprendizado.</h1>
+
+        <p class="lead">
+            Faça seu próprio Diário de Aprendizagem e mantenha uma lista dos
+            tópicos sobre os quais você está aprendendo. Sempre que você aprende algo novo
+            sobre um tópico, faça um registro resumindo o que você aprendeu.
+        </p>
+
+        <a class="btn btn-lg btn-primary" href="{% url 'signup' %}">Cadastre-se &raquo;</a>
     </div>
 {% endblock %}

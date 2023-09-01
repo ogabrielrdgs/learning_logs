@@ -32,6 +32,7 @@ class TopicListView(LoginRequiredMixin, ListView):
         context["search_form"] = forms.SearchForm(
             initial={"q": context["search"]}, placeholder="Buscar tópico..."
         )
+        context["private"] = True
         return context
 
 
@@ -62,6 +63,7 @@ class TopicDetailView(LoginRequiredMixin, ListView):
         context["search_form"] = forms.SearchForm(
             initial={"q": context["search"]}, placeholder="Buscar registro..."
         )
+        context["private"] = True
         return context
 
 
@@ -159,6 +161,7 @@ class TopicCreateView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
         context = super().get_context_data(**kwargs)
         context["title"] = "Criar novo tópico"
         context["btn_value"] = "Criar"
+        context["private"] = True
         return context
 
     def get_form_kwargs(self):
@@ -186,6 +189,7 @@ class TopicUpdateView(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
         context = super().get_context_data(**kwargs)
         context["title"] = f'Atualizar tópico "{self.get_object().get_title()}"'
         context["btn_value"] = "Salvar"
+        context["private"] = True
         return context
 
     def get_form_kwargs(self):
@@ -218,6 +222,7 @@ class EntryCreateView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
         context = super().get_context_data(**kwargs)
         context["title"] = "Criar novo registro"
         context["btn_value"] = "Criar"
+        context["private"] = True
         return context
 
     def form_valid(self, form):
@@ -243,6 +248,7 @@ class EntryUpdateView(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
         context = super().get_context_data(**kwargs)
         context["title"] = f"Atualizar registro"
         context["btn_value"] = "Salvar"
+        context["private"] = True
         return context
 
     def form_valid(self, form):

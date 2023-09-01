@@ -1,0 +1,8 @@
+{% load bootstrap_icons %}
+
+<div class="mb-5 position-relative">
+    {% bs_icon 'search' size='1.25rem' extra_classes='position-absolute top-50 translate-middle ms-4 text-secondary' %}
+    <form method="get">
+        {{ search_form.as_p }}
+    </form>
+</div>

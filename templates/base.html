@@ -1,23 +1,22 @@
 {% load static %}
+{% load bootstrap5 %}
 <!DOCTYPE html>
 <html lang="pt-br">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="icon" type="image/x-icon" href="{% static 'icons/favicon.svg' %}">
         <title>{% block title %}{% endblock %}</title>
+
+        {% bootstrap_css %}
+        {% bootstrap_javascript %}
         
         <link rel="stylesheet" href="{% static 'css/style.css' %}" />
     </head>
     <body>
         {% include 'navbar.html' %}
-        <main>
-            {% if messages %}
-                <ul>
-                    {% for message in messages %}
-                        <li>{{ message }}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
+        <main class="main-container p-4 py-5">
+            {% bootstrap_messages %}
 
             {% block content %}{% endblock %}
         </main>

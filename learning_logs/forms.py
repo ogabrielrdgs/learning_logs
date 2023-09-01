@@ -12,7 +12,7 @@ class SearchForm(forms.Form):
     q = forms.CharField(
         label="",
         max_length=100,
-        widget=forms.TextInput(),
+        widget=forms.TextInput(attrs={"class": "form-control rounded-pill p-3 ps-5"}),
         required=False,
     )
 
