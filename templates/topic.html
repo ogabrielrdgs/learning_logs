@@ -78,7 +78,7 @@
             {% for entry in entries %}
                 <div class="card mb-4 p-0">
                     <div class="card-header d-flex align-items-md-center flex-md-row flex-column p-3">
-                        <p class="d-flex m-0">{{ topic.date_added }}</p>
+                        <p class="d-flex m-0">{{ entry.date_added }}</p>
                         {% if not public %}
                             <div class="d-flex align-items-center ms-md-auto gap-2">
                                 <a href="{% url 'update_entry' entry.pk %}">
