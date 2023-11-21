@@ -7,8 +7,9 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from rest_framework import generics, filters
 
-from . import models, forms
+from . import models, forms, serializers
 
 
 class TopicListView(LoginRequiredMixin, ListView):
@@ -269,3 +270,21 @@ class EntryDeleteView(SuccessMessageMixin, LoginRequiredMixin, DeleteView):
     def form_valid(self, form):
         self.success_url = self.get_object().topic.get_url()
         return super().form_valid(form)
+
+
+class PublicTopicListAPIView(generics.ListAPIView):
+    queryset = models.Topic.objects.filter(public=True)
+    serializer_class = serializers.TopicSerializer
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ("title",)
+
+
+class PublicTopicDetailAPIView(generics.ListAPIView):
+    serializer_class = serializers.EntrySerializer
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ("content",)
+
+    def get_queryset(self):
+        return models.Entry.objects.filter(
+            topic__pk=self.kwargs["pk"], topic__public=True
+        )

@@ -44,4 +44,14 @@ urlpatterns = [
         views.EntryDeleteView.as_view(),
         name="delete_entry",
     ),
+    path(
+        "api/v1/topicos_publicos/",
+        views.PublicTopicListAPIView.as_view(),
+        name="api_public_topics",
+    ),
+    path(
+        "api/v1/topicos_publicos/<int:pk>/",
+        views.PublicTopicDetailAPIView.as_view(),
+        name="api_public_topic",
+    ),
 ]
