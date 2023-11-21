@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     "learning_logs.apps.LearningLogsConfig",
     "bootstrap5",
     "django_bootstrap_icons",
+    "rest_framework",
 ]
 
 MIDDLEWARE = [
@@ -147,3 +148,8 @@ AUTH_USER_MODEL = "accounts.CustomUser"
 LOGIN_URL = "login"
 LOGIN_REDIRECT_URL = "topics"
 LOGOUT_REDIRECT_URL = "login"
+
+REST_FRAMEWORK = {
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE": 10,
+}
