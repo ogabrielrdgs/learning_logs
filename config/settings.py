@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     "bootstrap5",
     "django_bootstrap_icons",
     "rest_framework",
+    "drf_spectacular",
 ]
 
 MIDDLEWARE = [
@@ -153,4 +154,12 @@ LOGOUT_REDIRECT_URL = "login"
 REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 10,
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Learning Logs Public API",
+    "DESCRIPTION": "Api to get public data from the learning logs app",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
 }
