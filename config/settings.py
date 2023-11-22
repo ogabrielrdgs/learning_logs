@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "accounts.apps.AccountsConfig",
     "learning_logs.apps.LearningLogsConfig",
+    "api.apps.ApiConfig",
     "bootstrap5",
     "django_bootstrap_icons",
     "rest_framework",

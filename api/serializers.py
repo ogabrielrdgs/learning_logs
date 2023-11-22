@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from . import models
+from learning_logs import models
 
 
 class TopicSerializer(serializers.ModelSerializer):
